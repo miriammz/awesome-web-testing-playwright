@@ -1,6 +1,56 @@
 {
-  "boards": [],
-  "cards": [],
-  "lists": [],
+  "boards": [
+    {
+      "name": "Chores",
+      "user": 0,
+      "starred": false,
+      "created": "2026-08-24",
+      "id": 1
+    }
+  ],
+  "cards": [
+    {
+      "order": 0,
+      "boardId": 1,
+      "listId": 1,
+      "name": "Buy groceries",
+      "created": "2026-08-24",
+      "deadline": "2026-08-27",
+      "description": "",
+      "completed": false,
+      "id": 1
+    },
+    {
+      "order": 1,
+      "boardId": 1,
+      "listId": 1,
+      "name": "Walk the dog",
+      "created": "2026-08-24",
+      "deadline": "2026-08-27",
+      "description": "",
+      "completed": false,
+      "id": 2
+    },
+    {
+      "order": 2,
+      "boardId": 1,
+      "listId": 1,
+      "name": "Mow the lawn",
+      "created": "2026-08-24",
+      "deadline": "2026-08-27",
+      "description": "",
+      "completed": false,
+      "id": 3
+    }
+  ],
+  "lists": [
+    {
+      "boardId": 1,
+      "name": "TO DO",
+      "order": 0,
+      "created": "2026-08-24",
+      "id": 1
+    }
+  ],
   "users": []
 }
