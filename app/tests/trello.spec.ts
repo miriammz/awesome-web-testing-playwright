@@ -1,19 +1,20 @@
 import {test, expect } from './fixtures/trello-test';
 
 test.describe('Trello-like board', () => {
-    const boardName = 'Chores';
+    let boardName: string;
     const listName = 'TO DO';
 
-    test.beforeEach(async ({ request, getStartedPage }) => {
-        // Clear the database
-        await request.post('http://localhost:3000/api/reset');
+    test.beforeEach(async ({ request, myBoardsPage }) => {
+        const randomNumber = Math.trunc(Math.random() * 1000000);
+        boardName = 'Chores ' + `${randomNumber}`;
+        await request.post('http://localhost:3000/api/boards', {data: {name: boardName}});
         // load the app
-        await getStartedPage.load();
+        await myBoardsPage.load();
         // create a new board
-        await getStartedPage.createFirstBoard(boardName);
+        await myBoardsPage.openBoard(boardName);
     });
 
-    test('should create the first board', async ({ boardPage }) => {
+    test('should display the new board', async ({ boardPage }) => {
         //verify the page appears as expected
         await boardPage.expectNewBoardLoaded(boardName);
     });
