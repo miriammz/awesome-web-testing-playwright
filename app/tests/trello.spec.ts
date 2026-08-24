@@ -1,43 +1,30 @@
-import { test, expect } from '@playwright/test';
+import {test, expect } from './fixtures/trello-test';
 
 test.beforeAll(async ({ request }) => {
     // Clear the database
     await request.post('http://localhost:3000/api/reset');
 });
 
-test('Create a new board with a list and cards', async ({ page }) => {
+test('Create a new board with a list and cards', async ({ getStartedPage, myBoardsPage, boardPage }) => {
     // load the app
-    await page.goto('http://localhost:3000/');
+    await getStartedPage.load();
     // create a new board
-    await page.getByTestId('first-board').click();
-    await page.getByTestId('first-board').fill('Chores');
-    await page.getByTestId('first-board').press('Enter');
+    await getStartedPage.createFirstBoard('Chores');
     //verify the page appears as expected
-    await expect(page.locator('[name="board-title"]')).toHaveValue('Chores');
-    await expect(page.getByPlaceholder('Enter list title...')).toBeVisible();
-    await expect(page.getByTestId('list')).not.toBeVisible();
+    await boardPage.expectNewBoardLoaded('Chores');
     // create a new list
-    await page.getByTestId('add-list-input').click();
-    await page.getByTestId('add-list-input').fill('TO DO');
-    await page.getByTestId('add-list-input').press('Enter');
+    await boardPage.addList('TO DO');
     //verify the list was created
-    await expect(page.getByTestId('list-name')).toHaveValue('TO DO');
+    await expect(boardPage.listName).toHaveValue('TO DO');
     //add cards to the list
-    await page.getByTestId('new-card').click();
-    await page.getByTestId('new-card-input').fill('Buy groceries');
-    await page.getByRole('button', { name: 'Add card' }).click();
-    await page.getByTestId('new-card-input').click();
-    await page.getByTestId('new-card-input').fill('Walk the dog');
-    await page.getByRole('button', { name: 'Add card' }).click();
-    await page.getByTestId('new-card-input').click();
-    await page.getByTestId('new-card-input').fill('Mow the lawn');
-    await page.getByRole('button', { name: 'Add card' }).click();
+    await boardPage.addCardToList(0, 'Buy groceries');
+    await boardPage.addCardToList(0, 'Walk the dog');
+    await boardPage.addCardToList(0, 'Mow the lawn');
     //verify the three cards appear
-    await expect(page.getByTestId('card-text')).toHaveText(
+    await expect(boardPage.cardTexts).toHaveText(
         ['Buy groceries', 'Walk the dog', 'Mow the lawn']);
     //navigate to the home page
-    await page.getByTestId('home').click();
+    await boardPage.goHome();
     //verify the home page appears as expected
-    await expect(page.getByText('My Boards')).toBeVisible();
-    await expect(page.getByText('Chores')).toBeVisible();
+    await myBoardsPage.expectLoaded(['Chores']);
 });
